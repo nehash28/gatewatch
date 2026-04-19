@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GateWatch — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --em:#10B981;--tx:#111318;--mu:#8B8F99;--br:#E8E6E1;--br2:#D0CEC8;
+  --bg:#F5F4F0;--surf:#fff;--red:#EF4444;
+  --hf:'Fraunces',serif;--bf:'Plus Jakarta Sans',sans-serif;
+  --sh:0 4px 24px rgba(17,19,24,.10),0 1px 4px rgba(17,19,24,.06);
+}
+body{font-family:var(--bf);background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+
+.bg-img{position:fixed;inset:0;z-index:0}
+.bg-img img{width:100%;height:100%;object-fit:cover;opacity:.12}
+.bg-img::after{content:'';position:absolute;inset:0;background:var(--bg);opacity:.85}
+
+.wrap{position:relative;z-index:1;width:100%;max-width:420px;animation:fadeUp .5s cubic-bezier(.22,1,.36,1) both}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+/* LOGO */
+.logo-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px}
+.gem{width:38px;height:38px;border-radius:11px;background:var(--em);display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(16,185,129,.35)}
+.gem svg{width:19px;height:19px;fill:var(--tx)}
+.brand{font-family:var(--hf);font-size:20px;font-weight:700;color:var(--tx);letter-spacing:-.4px}
+.brand-sub{font-size:11px;color:var(--mu);margin-top:1px;text-align:center}
+
+/* CARD */
+.card{background:var(--surf);border-radius:16px;border:1px solid var(--br);box-shadow:var(--sh);overflow:hidden}
+.card-top{padding:28px 28px 0}
+.card-title{font-family:var(--hf);font-size:22px;font-weight:700;color:var(--tx);letter-spacing:-.5px;margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--mu)}
+
+/* ROLE PILLS */
+.role-pills{display:flex;gap:8px;margin:20px 0 0}
+.rp{flex:1;padding:10px 8px;border-radius:10px;border:1.5px solid var(--br);background:var(--bg);cursor:pointer;text-align:center;transition:all .15s}
+.rp:hover{border-color:var(--br2);background:#fff}
+.rp.sel{border-color:var(--em);background:#ECFDF5}
+.rp-icon{font-size:18px;margin-bottom:4px}
+.rp-label{font-size:11px;font-weight:600;color:var(--mu)}
+.rp.sel .rp-label{color:var(--em)}
+
+/* DIVIDER */
+.div-row{display:flex;align-items:center;gap:10px;padding:18px 28px 0}
+.div-line{flex:1;height:1px;background:var(--br)}
+.div-txt{font-size:11px;color:var(--mu);white-space:nowrap}
+
+/* FORM */
+.form-wrap{padding:0 28px 28px}
+.fg{display:flex;flex-direction:column;gap:5px;margin-top:14px}
+.fl{font-size:10.5px;font-weight:700;color:var(--mu);letter-spacing:.5px;text-transform:uppercase}
+.fi{padding:10px 13px;border-radius:9px;border:1.5px solid var(--br2);font-family:var(--bf);font-size:14px;color:var(--tx);outline:none;transition:border-color .15s,box-shadow .15s;background:var(--surf)}
+.fi:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+.fi::placeholder{color:#C8C6C0}
+
+.err-box{margin-top:14px;padding:10px 13px;background:#FEF2F2;border:1px solid #FECACA;border-radius:9px;font-size:13px;color:#991B1B;display:flex;align-items:center;gap:8px;animation:shake .4s ease}
+.err-box svg{width:15px;height:15px;stroke:#DC2626;fill:none;stroke-width:2;flex-shrink:0}
+
+.btn-login{width:100%;margin-top:18px;padding:12px;background:var(--tx);color:#fff;border:none;border-radius:9px;font-family:var(--bf);font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s;letter-spacing:-.1px}
+.btn-login:hover{background:#2d3142}
+.btn-login:active{transform:scale(.98)}
+
+/* CREDENTIALS HINT */
+.hint{margin-top:20px;padding:14px 16px;background:var(--bg);border-radius:10px;border:1px solid var(--br)}
+.hint-title{font-size:10px;font-weight:700;color:var(--mu);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.hint-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--br)}
+.hint-row:last-child{border-bottom:none;padding-bottom:0}
+.hint-role{width:70px;font-size:11.5px;font-weight:600}
+.hint-role.a{color:#7C3AED}.hint-role.s{color:#2563EB}.hint-role.r{color:#059669}
+.hint-cred{font-size:11.5px;color:var(--mu);font-family:monospace}
+.fill-btn{margin-left:auto;font-size:10.5px;font-weight:600;color:var(--em);background:none;border:none;cursor:pointer;padding:2px 6px;border-radius:4px;transition:background .12s}
+.fill-btn:hover{background:#ECFDF5}
+</style>
+</head>
+<body>
+
+<div class="bg-img">
+  <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&q=80" alt="">
+</div>
+
+<div class="wrap">
+  <div class="logo-row">
+    <div class="gem"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="rgba(17,19,24,.2)"/></svg></div>
+    <div><div class="brand">GateWatch</div><div class="brand-sub">Prestige Lakeside Towers</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="card-title">Welcome back</div>
+      <div class="card-sub">Sign in to access your society portal</div>
+
+      <div class="role-pills">
+        <div class="rp" id="rp-admin" onclick="selectRole('admin')">
+          <div class="rp-icon">🛡️</div>
+          <div class="rp-label">Admin</div>
+        </div>
+        <div class="rp" id="rp-security" onclick="selectRole('security')">
+          <div class="rp-icon">🔒</div>
+          <div class="rp-label">Security</div>
+        </div>
+        <div class="rp" id="rp-resident" onclick="selectRole('resident')">
+          <div class="rp-icon">🏠</div>
+          <div class="rp-label">Resident</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="div-row"><div class="div-line"></div><div class="div-txt">enter credentials</div><div class="div-line"></div></div>
+
+    <div class="form-wrap">
+      <form method="POST" action="/login">
+        <div class="fg">
+          <div class="fl">Username</div>
+          <input class="fi" type="text" name="username" id="username" placeholder="Enter your username" autocomplete="username" required>
+        </div>
+        <div class="fg">
+          <div class="fl">Password</div>
+          <input class="fi" type="password" name="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
+        </div>
+
+        {% if error %}
+        <div class="err-box">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          {{ error }}
+        </div>
+        {% endif %}
+
+        <button class="btn-login" type="submit">Sign In →</button>
+      </form>
+
+      <div class="hint">
+        <div class="hint-title">Demo Credentials</div>
+        <div class="hint-row">
+          <span class="hint-role a">Admin</span>
+          <span class="hint-cred">admin / admin123</span>
+          <button class="fill-btn" onclick="fill('admin','admin123')">Use</button>
+        </div>
+        <div class="hint-row">
+          <span class="hint-role s">Security</span>
+          <span class="hint-cred">security / security123</span>
+          <button class="fill-btn" onclick="fill('security','security123')">Use</button>
+        </div>
+        <div class="hint-row">
+          <span class="hint-role r">Resident</span>
+          <span class="hint-cred">resident / resident123</span>
+          <button class="fill-btn" onclick="fill('resident','resident123')">Use</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function fill(u, p){
+  document.getElementById('username').value = u;
+  document.getElementById('password').value = p;
+  const roleMap = {admin:'admin', security:'security', resident:'resident'};
+  selectRole(roleMap[u]);
+}
+function selectRole(r){
+  document.querySelectorAll('.rp').forEach(el => el.classList.remove('sel'));
+  const el = document.getElementById('rp-' + r);
+  if(el) el.classList.add('sel');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GateWatch — Prestige Lakeside Towers</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F4F0;--surf:#FFFFFF;--nav:#111318;--nav2:#1A1D24;
+  --em:#10B981;--em-d:#059669;--em-lt:#ECFDF5;
+  --tx:#111318;--mu:#8B8F99;--br:#E8E6E1;--br2:#D0CEC8;
+  --red:#EF4444;--amber:#F59E0B;--blue:#3B82F6;--purple:#8B5CF6;
+  --sh:0 1px 3px rgba(17,19,24,.05),0 4px 16px rgba(17,19,24,.04);
+  --sh2:0 8px 32px rgba(17,19,24,.12),0 2px 8px rgba(17,19,24,.06);
+  --r:10px;--r2:14px;
+  --hf:'Fraunces',serif;--bf:'Plus Jakarta Sans',sans-serif;
+}
+body{font-family:var(--bf);background:var(--bg);color:var(--tx);display:flex;height:100vh;overflow:hidden}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scalePop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes slideRight{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* SIDEBAR */
+aside{width:230px;flex-shrink:0;background:var(--nav);display:flex;flex-direction:column;animation:fadeIn .3s ease}
+.logo-wrap{padding:22px 18px 18px;border-bottom:1px solid rgba(255,255,255,.06)}
+.logo-row{display:flex;align-items:center;gap:10px}
+.logo-gem{width:34px;height:34px;border-radius:10px;background:var(--em);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 20px rgba(16,185,129,.3)}
+.logo-gem svg{width:17px;height:17px;fill:var(--nav)}
+.lname{font-family:var(--hf);font-size:16px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.ltag{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px;letter-spacing:.3px}
+.soc-pill{margin:14px 14px 6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:var(--r);padding:10px 13px;cursor:pointer;transition:background .15s}
+.soc-pill:hover{background:rgba(255,255,255,.07)}
+.soc-label{font-size:9px;color:rgba(255,255,255,.28);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.soc-name{font-size:13px;color:rgba(255,255,255,.82);font-weight:600;letter-spacing:-.2px}
+.soc-tag{font-size:10px;color:var(--em);margin-top:2px;font-weight:500}
+nav{padding:6px 10px;flex:1;overflow-y:auto}
+.nav-gl{font-size:9px;color:rgba(255,255,255,.2);letter-spacing:1.2px;text-transform:uppercase;padding:12px 10px 4px}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.44);font-size:13px;font-weight:500;transition:all .15s;margin-bottom:1px;position:relative}
+.ni svg{width:15px;height:15px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8}
+.ni:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.82)}
+.ni.on{background:rgba(16,185,129,.12);color:var(--em)}
+.ni.on::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:20px;background:var(--em);border-radius:0 3px 3px 0}
+.nbadge{margin-left:auto;background:var(--em);color:var(--nav);font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.2px}
+.nb-red{background:var(--red);color:#fff}
+.sb-foot{padding:14px;border-top:1px solid rgba(255,255,255,.06)}
+.u-row{display:flex;align-items:center;gap:10px}
+.u-av{width:34px;height:34px;border-radius:50%;overflow:hidden;flex-shrink:0;background:rgba(16,185,129,.15)}
+.u-av img{width:100%;height:100%;object-fit:cover}
+.u-name{font-size:12.5px;color:rgba(255,255,255,.82);font-weight:600}
+.u-role{font-size:10.5px;color:rgba(255,255,255,.32);margin-top:1px}
+.online-dot{width:8px;height:8px;border-radius:50%;background:var(--em);margin-left:auto;animation:pulse 2s infinite}
+
+/* MAIN */
+main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:var(--surf);border-bottom:1px solid var(--br);padding:0 28px;height:58px;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.ptitle{font-family:var(--hf);font-size:16px;font-weight:700;letter-spacing:-.3px}
+.tr{margin-left:auto;display:flex;align-items:center;gap:10px}
+.clock{font-family:var(--hf);font-size:14px;font-weight:600;color:var(--tx);letter-spacing:-.3px;min-width:80px;text-align:right}
+.live-pill{display:inline-flex;align-items:center;gap:5px;background:var(--em-lt);color:var(--em-d);font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;border:1px solid rgba(16,185,129,.2)}
+.ldot{width:6px;height:6px;background:var(--em);border-radius:50%;animation:pulse 1.5s infinite}
+.weather-chip{display:flex;align-items:center;gap:6px;padding:5px 11px;background:#FFF7ED;border:1px solid #FED7AA;border-radius:20px;font-size:12px;color:#C2410C;font-weight:500}
+.content{padding:24px 28px;flex:1;overflow-y:auto}
+.section{display:none}
+.section.on{display:block;animation:fadeIn .2s ease}
+
+/* DASHBOARD HERO */
+.hero{border-radius:var(--r2);overflow:hidden;position:relative;height:200px;margin-bottom:20px;animation:scalePop .4s cubic-bezier(.22,1,.36,1)}
+.hero img{width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(17,19,24,.75) 0%,rgba(17,19,24,.3) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px 28px}
+.hero-tag{font-size:10px;color:var(--em);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.hero-title{font-family:var(--hf);font-size:26px;font-weight:700;color:#fff;letter-spacing:-.5px;line-height:1.15}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+.hero-badges{display:flex;gap:8px;margin-top:12px}
+.hb{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11.5px;font-weight:600;backdrop-filter:blur(10px);background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.hb svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2}
+
+/* STATS */
+.srow{display:grid;gap:12px;margin-bottom:18px}
+.s3{grid-template-columns:repeat(3,1fr)}.s4{grid-template-columns:repeat(4,1fr)}.s2{grid-template-columns:repeat(2,1fr)}
+.sc{background:var(--surf);border-radius:var(--r2);border:1px solid var(--br);padding:18px 20px;box-shadow:var(--sh);transition:box-shadow .2s,transform .2s;animation:fadeUp .4s cubic-bezier(.22,1,.36,1) both;cursor:default}
+.sc:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.sc:nth-child(1){animation-delay:.05s}.sc:nth-child(2){animation-delay:.1s}.sc:nth-child(3){animation-delay:.15s}.sc:nth-child(4){animation-delay:.2s}
+.sc-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.sc-icon svg{width:16px;height:16px;fill:none;stroke-width:2}
+.ic-g{background:#ECFDF5}.ic-g svg{stroke:#059669}
+.ic-b{background:#EFF6FF}.ic-b svg{stroke:#2563EB}
+.ic-a{background:#FFFBEB}.ic-a svg{stroke:#D97706}
+.ic-r{background:#FEF2F2}.ic-r svg{stroke:#DC2626}
+.ic-p{background:#FAF5FF}.ic-p svg{stroke:#7C3AED}
+.sc-lbl{font-size:11px;color:var(--mu);font-weight:600;letter-spacing:.3px;text-transform:uppercase;margin-bottom:3px}
+.sc-val{font-family:var(--hf);font-size:30px;font-weight:700;line-height:1;letter-spacing:-1.5px;animation:fadeUp .4s cubic-bezier(.22,1,.36,1) both;animation-delay:.25s}
+.sc-tr{font-size:11.5px;color:var(--mu);margin-top:5px;display:flex;align-items:center;gap:4px}
+.tr-up{color:var(--em-d)}.tr-dn{color:var(--red)}
+.sc-bar{height:3px;background:var(--br);border-radius:2px;margin-top:12px;overflow:hidden}
+.sc-bar-fill{height:100%;border-radius:2px;animation:slideRight .6s cubic-bezier(.22,1,.36,1) both;animation-delay:.3s;transform-origin:left}
+
+/* CARD */
+.card{background:var(--surf);border-radius:var(--r2);border:1px solid var(--br);overflow:hidden;box-shadow:var(--sh);animation:scalePop .35s cubic-bezier(.22,1,.36,1) both;animation-delay:.12s}
+.card+.card{margin-top:14px}
+.ch{padding:16px 20px;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:10px}
+.ch-img{width:38px;height:38px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.ct{font-family:var(--hf);font-size:15px;font-weight:700;letter-spacing:-.3px}
+.cs{font-size:12px;color:var(--mu);margin-top:1px}
+.ca{margin-left:auto;display:flex;gap:8px;align-items:center}
+
+/* SEARCH BAR */
+.search-wrap{position:relative;flex:1;max-width:280px}
+.search-wrap svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--mu);fill:none;stroke-width:2;pointer-events:none}
+.si{width:100%;padding:8px 12px 8px 34px;border-radius:var(--r);border:1px solid var(--br2);background:var(--bg);font-family:var(--bf);font-size:13px;color:var(--tx);outline:none;transition:border-color .15s,box-shadow .15s}
+.si:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(16,185,129,.1);background:var(--surf)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 15px;border-radius:var(--r);font-family:var(--bf);font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .15s;line-height:1}
+.btn:active{transform:scale(.97)}
+.btn-d{background:var(--tx);color:#fff}.btn-d:hover{background:#2d3142}
+.btn-o{background:transparent;border:1px solid var(--br2);color:var(--tx)}.btn-o:hover{background:var(--bg)}
+.btn-ok{background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0}.btn-ok:hover{background:#D1FAE5}
+.btn-no{background:#FEF2F2;color:#991B1B;border:1px solid #FECACA}.btn-no:hover{background:#FEE2E2}
+.btn-sm{padding:5px 11px;font-size:11.5px;border-radius:7px}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--bg)}
+th{font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.7px;padding:10px 20px;border-bottom:1px solid var(--br);text-align:left}
+td{padding:13px 20px;border-bottom:1px solid var(--br);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr{transition:background .1s}
+tbody tr:hover td{background:#FAFAF7}
+.row-exit{animation:fadeUp .2s reverse ease forwards}
+
+.nc{display:flex;align-items:center;gap:12px}
+.vav{width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--br)}
+.vav img{width:100%;height:100%;object-fit:cover}
+.vav-txt{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.aa{background:#EFF6FF;color:#1D4ED8}.ab{background:#F0FDF4;color:#15803D}.ac{background:#FFFBEB;color:#B45309}.ad{background:#FAF5FF;color:#6D28D9}.ae{background:#FFF1F2;color:#BE123C}.af{background:#F0FDFA;color:#0F766E}
+.np{font-weight:600;font-size:13px}.ns{font-size:11.5px;color:var(--mu);margin-top:1px}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;display:inline-block}
+.bg{background:#ECFDF5;color:#065F46}.bg::before{background:#059669}
+.bd{background:#FEF2F2;color:#991B1B}.bd::before{background:#DC2626}
+.bw{background:#FFFBEB;color:#92400E}.bw::before{background:#D97706}
+.bi{background:#EFF6FF;color:#1E40AF}.bi::before{background:#2563EB}
+.bp{background:#FEFCE8;color:#854D0E}.bp::before{background:#CA8A04}
+.bz{background:#F9FAFB;color:#4B5563}.bz::before{background:#9CA3AF}
+.bv{background:#FAF5FF;color:#5B21B6}.bv::before{background:#7C3AED}
+
+/* FORM */
+.af{padding:16px 20px;background:var(--bg);border-top:1px solid var(--br);display:none}
+.af.op{display:block;animation:fadeUp .2s cubic-bezier(.22,1,.36,1) both}
+.fr{display:grid;gap:12px;margin-bottom:12px}
+.fr3{grid-template-columns:1fr 1fr 1fr}.fr2{grid-template-columns:1fr 1fr}.fr1{grid-template-columns:1fr}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fl{font-size:10px;font-weight:700;color:var(--mu);letter-spacing:.6px;text-transform:uppercase}
+.fi{padding:9px 12px;border-radius:var(--r);border:1px solid var(--br2);background:var(--surf);font-family:var(--bf);font-size:13px;color:var(--tx);outline:none;transition:border-color .15s,box-shadow .15s}
+.fi:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+.fi::placeholder{color:#C8C6C0}
+textarea.fi{resize:none}
+select.fi{appearance:none;cursor:pointer}
+.frow{display:flex;gap:8px;justify-content:flex-end}
+
+/* STAFF LOG */
+.le{display:flex;align-items:center;gap:12px;padding:13px 20px;border-bottom:1px solid var(--br);transition:background .1s}
+.le:last-child{border-bottom:none}
+.le:hover{background:#FAFAF7}
+.li-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lin{background:#ECFDF5}.lin svg{stroke:var(--em-d)}
+.lout{background:#FEF2F2}.lout svg{stroke:var(--red)}
+.l-av{width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--br)}
+.l-av img{width:100%;height:100%;object-fit:cover}
+.lname{font-weight:600;font-size:13px}
+.lrole{font-size:11.5px;color:var(--mu);margin-top:1px}
+.ltw{margin-left:auto;text-align:right}
+.lt{font-family:var(--hf);font-size:13px;font-weight:700;letter-spacing:-.2px}
+.lact{font-size:11px;color:var(--mu);margin-top:1px}
+
+/* STAFF GRID */
+.staff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px}
+.sg-card{border-radius:var(--r);border:1px solid var(--br);overflow:hidden;background:var(--surf);transition:box-shadow .2s,transform .2s;animation:fadeUp .4s cubic-bezier(.22,1,.36,1) both}
+.sg-card:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.sg-card:nth-child(1){animation-delay:.05s}.sg-card:nth-child(2){animation-delay:.08s}.sg-card:nth-child(3){animation-delay:.11s}
+.sg-img{width:100%;height:90px;object-fit:cover}
+.sg-body{padding:10px 12px}
+.sg-name{font-weight:600;font-size:13px;letter-spacing:-.2px}
+.sg-role{font-size:11px;color:var(--mu);margin-top:1px}
+.sg-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid var(--br)}
+.sg-time{font-size:10.5px;color:var(--mu)}
+
+/* NOTICES */
+.notice-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px}
+.ncard{border-radius:var(--r);border:1px solid var(--br);overflow:hidden;background:var(--surf);transition:box-shadow .2s,transform .2s;animation:fadeUp .4s cubic-bezier(.22,1,.36,1) both}
+.ncard:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.ncard:nth-child(1){animation-delay:.05s}.ncard:nth-child(2){animation-delay:.1s}.ncard:nth-child(3){animation-delay:.15s}.ncard:nth-child(4){animation-delay:.2s}
+.n-img{width:100%;height:110px;object-fit:cover;display:block}
+.n-body-wrap{padding:14px 15px}
+.n-head{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px}
+.n-title{font-family:var(--hf);font-size:13.5px;font-weight:700;flex:1;letter-spacing:-.2px;line-height:1.3}
+.new-chip{font-size:9px;font-weight:700;background:#FEF2F2;color:#991B1B;padding:2px 7px;border-radius:20px;flex-shrink:0;margin-top:2px}
+.n-txt{font-size:12px;color:var(--mu);line-height:1.65;margin-bottom:11px}
+.n-foot{display:flex;align-items:center;gap:8px}
+.n-author{font-size:11px;color:var(--mu);flex:1}
+.n-date{font-size:11px;color:var(--mu)}
+
+/* ACTIVITY FEED (dashboard) */
+.feed{padding:4px 0}
+.feed-item{display:flex;align-items:center;gap:12px;padding:11px 20px;border-bottom:1px solid var(--br);transition:background .1s}
+.feed-item:last-child{border-bottom:none}
+.feed-item:hover{background:#FAFAF7}
+.feed-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.f-green{background:var(--em)}.f-red{background:var(--red)}.f-amber{background:var(--amber)}.f-blue{background:var(--blue)}
+.feed-txt{flex:1;font-size:13px}
+.feed-time{font-size:11.5px;color:var(--mu)}
+
+/* TWO-COL */
+.two-col{display:grid;grid-template-columns:1.3fr 1fr;gap:14px}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;z-index:9999;background:var(--tx);color:#fff;padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:500;display:none;align-items:center;gap:10px;box-shadow:0 10px 40px rgba(17,19,24,.25)}
+.toast.show{display:flex;animation:fadeUp .3s cubic-bezier(.22,1,.36,1) both}
+.t-ic{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tok .t-ic{background:var(--em)}.terr .t-ic{background:var(--red)}
+
+/* EMPTY STATE */
+.empty{padding:40px 20px;text-align:center}
+.empty svg{width:40px;height:40px;stroke:var(--br2);fill:none;stroke-width:1.5;margin:0 auto 12px;display:block}
+.empty p{font-size:13px;color:var(--mu)}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside>
+  <div class="logo-wrap">
+    <div class="logo-row">
+      <div class="logo-gem"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="rgba(17,19,24,.25)"/></svg></div>
+      <div><div class="lname">GateWatch</div><div class="ltag">Society Portal</div></div>
+    </div>
+  </div>
+
+  <div class="soc-pill" onclick="navigate('dashboard',this)">
+    <div class="soc-label">Active Property</div>
+    <div class="soc-name">Prestige Lakeside Towers</div>
+    <div class="soc-tag">✦ Premium Gated Community</div>
+  </div>
+
+  <nav>
+    <div class="nav-gl">Overview</div>
+    <div class="ni" onclick="navigate('dashboard',this)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-gl">Manage</div>
+    {% if current_user.role in ('admin','security','resident') %}
+    <div class="ni on" onclick="navigate('visitors',this)">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      {% if current_user.role == 'resident' %}My Visitors{% else %}Visitors{% endif %}
+      <span class="nbadge" id="nav-p">{{ pending_count }}</span>
+    </div>
+    {% endif %}
+    {% if current_user.role in ('admin','security') %}
+    <div class="ni" onclick="navigate('staff',this)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M3 21c0-4.4 4-8 9-8s9 3.6 9 8"/></svg>
+      Staff
+    </div>
+    {% endif %}
+    {% if current_user.role in ('admin', 'security') %}
+    <div class="ni" onclick="navigate('notices',this)">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      Notices
+      <span class="nbadge nb-red">{{ unread_count }}</span>
+    </div>
+    {% endif %}
+    {% if current_user.role == 'resident' %}
+    <div class="ni" onclick="navigate('notices',this)">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      Notices
+      <span class="nbadge nb-red">{{ unread_count }}</span>
+    </div>
+    {% endif %}
+    {% if current_user.role == 'admin' %}
+    <div class="nav-gl">More</div>
+    <div class="ni" onclick="comingSoon(this,'Amenity Booking')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Amenity Booking
+    </div>
+    <div class="ni" onclick="comingSoon(this,'Helpdesk')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Helpdesk
+    </div>
+    {% endif %}
+  </nav>
+
+  <div class="sb-foot">
+    <div class="u-row">
+      <div class="u-av" style="display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--em);background:rgba(16,185,129,0.15)">{{ current_user.name[:2]|upper }}</div>
+      <div>
+        <div class="u-name">{{ current_user.name }}</div>
+        <div class="u-role">
+          {% if current_user.role == 'admin' %}🛡️ Admin
+          {% elif current_user.role == 'security' %}🔒 Security Guard
+          {% else %}🏠 {{ current_user.flat }} · Resident{% endif %}
+        </div>
+      </div>
+      <a href="/logout" title="Logout" style="margin-left:auto;color:rgba(255,255,255,.3);transition:color .15s;text-decoration:none" onmouseover="this.style.color='#EF4444'" onmouseout="this.style.color='rgba(255,255,255,.3)'">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </a>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main>
+  <div class="topbar">
+    <div class="ptitle" id="page-title">Dashboard</div>
+    <div class="tr">
+      {% if current_user.role == 'admin' %}
+      <span style="font-size:11px;font-weight:600;background:#FAF5FF;color:#6D28D9;border:1px solid #DDD6FE;padding:4px 10px;border-radius:20px">🛡️ Admin</span>
+      {% elif current_user.role == 'security' %}
+      <span style="font-size:11px;font-weight:600;background:#EFF6FF;color:#1E40AF;border:1px solid #BFDBFE;padding:4px 10px;border-radius:20px">🔒 Security</span>
+      {% else %}
+      <span style="font-size:11px;font-weight:600;background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;padding:4px 10px;border-radius:20px">🏠 Resident</span>
+      {% endif %}
+      <div class="weather-chip">
+        <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+        37°C Chennai
+      </div>
+      <div class="live-pill"><span class="ldot"></span>Gate Live</div>
+      <div class="clock" id="clock">--:-- --</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="section on" id="section-dashboard">
+      <div class="hero">
+        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1400&q=80" alt="Prestige Lakeside Towers">
+        <div class="hero-overlay">
+          <div class="hero-tag">Prestige Lakeside Towers · Chennai</div>
+          <div class="hero-title">Good morning,<br>{{ current_user.name }} 👋</div>
+          <div class="hero-sub">{{ today }} — Here's what's happening at your society today.</div>
+          <div class="hero-badges">
+            <span class="hb"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>{{ visitors|length }} visitors today</span>
+            <span class="hb"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M3 21c0-4.4 4-8 9-8s9 3.6 9 8"/></svg>{{ present_count }} staff present</span>
+            <span class="hb"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>{{ unread_count }} new notices</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="srow s4">
+        <div class="sc" style="cursor:pointer" onclick="navigate('visitors',document.querySelector('.ni:nth-child(4)'))">
+          <div class="sc-icon ic-b"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div class="sc-lbl">Visitors Today</div>
+          <div class="sc-val">{{ visitors|length }}</div>
+          <div class="sc-tr"><span class="tr-up">↑ 5</span> vs yesterday</div>
+          <div class="sc-bar"><div class="sc-bar-fill" style="width:{{ [visitors|length * 7, 100]|min }}%;background:#3B82F6"></div></div>
+        </div>
+        <div class="sc" style="cursor:pointer" onclick="navigate('visitors',document.querySelector('.ni:nth-child(4)'))">
+          <div class="sc-icon ic-a"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="sc-lbl">Pending Approval</div>
+          <div class="sc-val" id="dash-pending">{{ pending_count }}</div>
+          <div class="sc-tr tr-dn">Needs attention</div>
+          <div class="sc-bar"><div class="sc-bar-fill" style="width:{{ [pending_count * 20, 100]|min }}%;background:#F59E0B"></div></div>
+        </div>
+        <div class="sc">
+          <div class="sc-icon ic-g"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M3 21c0-4.4 4-8 9-8s9 3.6 9 8"/></svg></div>
+          <div class="sc-lbl">Staff Present</div>
+          <div class="sc-val">{{ present_count }}</div>
+          <div class="sc-tr tr-up">of {{ staff|length }} total</div>
+          <div class="sc-bar"><div class="sc-bar-fill" style="width:{{ [(present_count / staff|length * 100)|int, 100]|min }}%;background:#10B981"></div></div>
+        </div>
+        <div class="sc">
+          <div class="sc-icon ic-r"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+          <div class="sc-lbl">Unread Notices</div>
+          <div class="sc-val">{{ unread_count }}</div>
+          <div class="sc-tr tr-dn">Action required</div>
+          <div class="sc-bar"><div class="sc-bar-fill" style="width:{{ [unread_count * 25, 100]|min }}%;background:#EF4444"></div></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="ch">
+            <img class="ch-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=80&q=80" alt="">
+            <div><div class="ct">Recent Activity</div><div class="cs">Live gate events</div></div>
+          </div>
+          <div class="feed">
+            {% for v in visitors[:6] %}
+            <div class="feed-item">
+              <div class="feed-dot {% if v.status=='approved' %}f-green{% elif v.status=='denied' %}f-red{% else %}f-amber{% endif %}"></div>
+              <div class="feed-txt">
+                <strong>{{ v.name }}</strong>
+                {% if v.status=='approved' %} entered via Gate — {{ v.flat }}
+                {% elif v.status=='denied' %} was denied entry — {{ v.flat }}
+                {% else %} is awaiting approval — {{ v.flat }}{% endif %}
+              </div>
+              <div class="feed-time">{{ v.time }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ch">
+            <img class="ch-img" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=80&q=80" alt="">
+            <div><div class="ct">Society Snapshot</div><div class="cs">Quick overview</div></div>
+          </div>
+          <div style="padding:14px 18px">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              {% set items = [
+                ('Total Flats', '240', '#3B82F6'),
+                ('Occupied', '218', '#10B981'),
+                ('Vehicles Registered', '412', '#F59E0B'),
+                ('Active Staff', staff|length|string, '#7C3AED'),
+                ('Open Complaints', '3', '#EF4444'),
+              ] %}
+              {% for lbl,val,clr in items %}
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:13px;color:var(--mu)">{{ lbl }}</span>
+                <span style="font-family:var(--hf);font-size:15px;font-weight:700;color:{{ clr }}">{{ val }}</span>
+              </div>
+              {% endfor %}
+            </div>
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--br)">
+              <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=80" style="width:100%;height:80px;object-fit:cover;border-radius:var(--r)" alt="Society">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VISITORS ══ -->
+    <div class="section" id="section-visitors">
+      <div class="srow s3">
+        <div class="sc">
+          <div class="sc-icon ic-b"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div class="sc-lbl">Total Today</div><div class="sc-val">{{ visitors|length }}</div>
+          <div class="sc-tr">All gate entries</div>
+        </div>
+        <div class="sc">
+          <div class="sc-icon ic-a"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="sc-lbl">Awaiting Approval</div><div class="sc-val" id="pending-count">{{ pending_count }}</div>
+          <div class="sc-tr tr-dn">Needs action</div>
+        </div>
+        <div class="sc">
+          <div class="sc-icon ic-g"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="sc-lbl">Approved</div><div class="sc-val">{{ visitors|selectattr('status','eq','approved')|list|length }}</div>
+          <div class="sc-tr tr-up">Entry granted</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ch">
+          <img class="ch-img" src="https://images.unsplash.com/photo-1577102073743-7d29378b77e7?w=80&q=80" alt="">
+          <div><div class="ct">Gate Queue</div><div class="cs">Live visitor log</div></div>
+          <div class="ca">
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input class="si" placeholder="Search visitors…" id="vsearch" oninput="filterVisitors(this.value)">
+            </div>
+            <button class="btn btn-d btn-sm" onclick="toggleForm('vf')">+ Add Visitor</button>
+          </div>
+        </div>
+
+        <div class="af" id="vf">
+          <div class="fr fr3">
+            <div class="fg"><div class="fl">Visitor Name</div><input class="fi" placeholder="e.g. Priya Mehta" id="v-name"></div>
+            <div class="fg"><div class="fl">Flat No.</div><input class="fi" placeholder="e.g. B-204" id="v-flat"></div>
+            <div class="fg"><div class="fl">Purpose</div><select class="fi" id="v-purpose"><option>Guest</option><option>Delivery</option><option>Cab/Taxi</option><option>Service</option><option>Other</option></select></div>
+          </div>
+          <div class="frow">
+            <button class="btn btn-o btn-sm" onclick="toggleForm('vf')">Cancel</button>
+            <button class="btn btn-d btn-sm" onclick="addVisitor()">Add to Queue</button>
+          </div>
+        </div>
+
+        <table>
+          <thead><tr><th style="width:28%">Visitor</th><th>Flat</th><th>Purpose</th><th>Time</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="vt">
+            {% set avimgs = ['12','13','14','15','25','32','33','44','47','48','49','50','51','52'] %}
+            {% for v in visitors %}
+            <tr data-id="{{ v.id }}" data-name="{{ v.name|lower }}" data-flat="{{ v.flat|lower }}">
+              <td><div class="nc">
+                <div class="vav"><img src="https://i.pravatar.cc/60?img={{ avimgs[loop.index0 % avimgs|length] }}" alt="{{ v.name }}"></div>
+                <div><div class="np">{{ v.name }}</div><div class="ns">{{ v.phone }}</div></div>
+              </div></td>
+              <td><span style="font-weight:600;font-size:13px">{{ v.flat }}</span></td>
+              <td>{% if v.purpose=='Delivery'%}<span class="badge bw">{{ v.purpose }}</span>{% elif v.purpose=='Service'%}<span class="badge bz">{{ v.purpose }}</span>{% elif v.purpose=='Cab/Taxi'%}<span class="badge bi">{{ v.purpose }}</span>{% else %}<span class="badge bi">{{ v.purpose }}</span>{% endif %}</td>
+              <td style="color:var(--mu);font-size:12.5px;font-weight:500">{{ v.time }}</td>
+              <td>{% if v.status=='approved'%}<span class="badge bg">Approved</span>{% elif v.status=='denied'%}<span class="badge bd">Denied</span>{% else %}<span class="badge bp">Pending</span>{% endif %}</td>
+              <td>
+                {% if v.status=='pending' and current_user.role in ('admin','security') %}
+                  <button class="btn btn-ok btn-sm" onclick="updateVisitor({{ v.id }},'approved',this)">Approve</button>
+                  <button class="btn btn-no btn-sm" onclick="updateVisitor({{ v.id }},'denied',this)" style="margin-left:5px">Deny</button>
+                {% else %}<span style="color:var(--mu);font-size:12px">{{ v.status|capitalize }}</span>{% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="empty" id="v-empty" style="display:none">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <p>No visitors found matching your search.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ STAFF ══ -->
+    <div class="section" id="section-staff">
+      <div class="srow s4">
+        <div class="sc"><div class="sc-icon ic-g"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M3 21c0-4.4 4-8 9-8s9 3.6 9 8"/></svg></div><div class="sc-lbl">Present</div><div class="sc-val">{{ present_count }}</div><div class="sc-tr tr-up">of {{ staff|length }}</div></div>
+        <div class="sc"><div class="sc-icon ic-b"><svg viewBox="0 0 24 24"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg></div><div class="sc-lbl">Check-ins</div><div class="sc-val">{{ staff|selectattr('status','ne','absent')|list|length }}</div><div class="sc-tr">Today</div></div>
+        <div class="sc"><div class="sc-icon ic-a"><svg viewBox="0 0 24 24"><polyline points="7 11 12 6 17 11"/><polyline points="7 18 12 13 17 18"/></svg></div><div class="sc-lbl">Checked Out</div><div class="sc-val">{{ staff|selectattr('status','eq','checked_out')|list|length }}</div><div class="sc-tr">Left today</div></div>
+        <div class="sc"><div class="sc-icon ic-r"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div><div class="sc-lbl">Absent</div><div class="sc-val">{{ staff|selectattr('status','eq','absent')|list|length }}</div><div class="sc-tr tr-dn">No check-in</div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="ch">
+            <img class="ch-img" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=80&q=80" alt="">
+            <div><div class="ct">Staff On Duty</div><div class="cs">Present right now</div></div>
+          </div>
+          <div class="staff-grid">
+            {% set sc = ['#EFF6FF;color:#1D4ED8','#F0FDF4;color:#15803D','#FFFBEB;color:#B45309','#FAF5FF;color:#6D28D9','#FFF1F2;color:#BE123C','#F0FDFA;color:#0F766E'] %}
+            {% for s in staff %}{% if s.status=='present' %}
+            <div class="sg-card">
+              <div style="width:100%;height:90px;display:flex;align-items:center;justify-content:center;background:{{ sc[loop.index0 % sc|length] }};font-family:var(--hf);font-size:30px;font-weight:700;letter-spacing:-1px">{{ s.name[0] }}{{ s.name.split()[-1][0] if s.name.split()|length > 1 else '' }}</div>
+              <div class="sg-body">
+                <div class="sg-name">{{ s.name }}</div>
+                <div class="sg-role">{{ s.role }}</div>
+                <div class="sg-foot">
+                  <span class="sg-time">Since {{ s.time }}</span>
+                  <span class="badge bg" style="font-size:10px;padding:2px 7px">On Duty</span>
+                </div>
+              </div>
+            </div>
+            {% endif %}{% endfor %}
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ch">
+            <div><div class="ct">Activity Log</div><div class="cs">Entry & exit today</div></div>
+          </div>
+          {% set sc2 = ['aa','ab','ac','ad','ae','af'] %}
+          {% for s in staff %}{% if s.status != 'absent' %}
+          <div class="le">
+            <div class="li-ic {{ 'lin' if s.status=='present' else 'lout' }}">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:14px;height:14px">
+                {% if s.status=='present'%}<line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>{% else %}<line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>{% endif %}
+              </svg>
+            </div>
+            <div class="vav-txt {{ sc2[loop.index0 % sc2|length] }}" style="width:34px;height:34px;flex-shrink:0">{{ s.name[0] }}{{ s.name.split()[-1][0] if s.name.split()|length > 1 else '' }}</div>
+            <div><div class="lname">{{ s.name }}</div><div class="lrole">{{ s.role }}</div></div>
+            <div class="ltw"><div class="lt">{{ s.time }}</div><div class="lact">{{ 'Check-in' if s.status=='present' else 'Check-out' }}</div></div>
+          </div>
+          {% endif %}{% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ NOTICES ══ -->
+    <div class="section" id="section-notices">
+      <div class="srow s3">
+        <div class="sc"><div class="sc-icon ic-b"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div><div class="sc-lbl">Total</div><div class="sc-val">{{ notices|length }}</div><div class="sc-tr">This month</div></div>
+        <div class="sc"><div class="sc-icon ic-a"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="sc-lbl">Unread</div><div class="sc-val">{{ unread_count }}</div><div class="sc-tr tr-dn">Unread</div></div>
+        <div class="sc"><div class="sc-icon ic-r"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="sc-lbl">Urgent</div><div class="sc-val">{{ urgent_count }}</div><div class="sc-tr tr-dn">Act now</div></div>
+      </div>
+
+      <div class="card">
+        <div class="ch">
+          <img class="ch-img" src="https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?w=80&q=80" alt="">
+          <div><div class="ct">Notice Board</div><div class="cs">Society announcements</div></div>
+          <div class="ca">{% if current_user.role == 'admin' %}<button class="btn btn-d btn-sm" onclick="toggleForm('nf')">+ Post Notice</button>{% endif %}</div>
+        </div>
+        <div class="af" id="nf">
+          <div class="fr fr3">
+            <div class="fg"><div class="fl">Title</div><input class="fi" placeholder="Notice title" id="n-title"></div>
+            <div class="fg"><div class="fl">Category</div><select class="fi" id="n-cat"><option value="general">General</option><option value="urgent">Urgent</option><option value="info">Info</option><option value="event">Event</option></select></div>
+            <div class="fg"><div class="fl">Posted By</div><input class="fi" placeholder="e.g. Management" id="n-from"></div>
+          </div>
+          <div class="fr fr1">
+            <div class="fg"><div class="fl">Message</div><textarea class="fi" rows="2" placeholder="Write your notice…" id="n-body"></textarea></div>
+          </div>
+          <div class="frow">
+            <button class="btn btn-o btn-sm" onclick="toggleForm('nf')">Cancel</button>
+            <button class="btn btn-d btn-sm" onclick="postNotice()">Post Notice</button>
+          </div>
+        </div>
+        <div class="notice-grid" id="ng">
+          {% set notice_imgs = {
+            'urgent': 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=80',
+            'info':   'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80',
+            'event':  'https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=400&q=80',
+            'general':'https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=400&q=80'
+          } %}
+          {% for n in notices %}
+          <div class="ncard">
+            <img class="n-img" src="{{ notice_imgs.get(n.category, notice_imgs.general) }}" alt="">
+            <div class="n-body-wrap">
+              <div class="n-head">
+                <div class="n-title">{{ n.title }}</div>
+                {% if n.is_new %}<span class="new-chip">NEW</span>{% endif %}
+              </div>
+              <div class="n-txt">{{ n.body }}</div>
+              <div class="n-foot">
+                <span class="n-author">{{ n.author }}</span>
+                {% if n.category=='urgent'%}<span class="badge bd">Urgent</span>{% elif n.category=='info'%}<span class="badge bi">Info</span>{% elif n.category=='event'%}<span class="badge bv">Event</span>{% else %}<span class="badge bg">General</span>{% endif %}
+                <span class="n-date">{{ n.date }}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="toast" id="toast"><div class="t-ic" id="t-ic"></div><span id="t-msg"></span></div>
+
+<script>
+const SEC_TITLES={dashboard:'Dashboard',visitors:'Visitor Management',staff:'Staff Entry / Exit',notices:'Society Notices'};
+let pending={{ pending_count }};
+
+// Live clock
+function updateClock(){
+  const now=new Date();
+  let h=now.getHours(),m=now.getMinutes(),s=now.getSeconds();
+  const am=h>=12?'PM':'AM';
+  h=h%12||12;
+  document.getElementById('clock').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} ${am}`;
+}
+updateClock();setInterval(updateClock,1000);
+
+function navigate(k,el){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  if(el)el.classList.add('on');
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('on'));
+  if(k&&document.getElementById('section-'+k)){
+    document.getElementById('section-'+k).classList.add('on');
+    document.getElementById('page-title').textContent=SEC_TITLES[k]||k;
+  }
+}
+
+function toggleForm(id){document.getElementById(id).classList.toggle('op')}
+
+// Visitor search/filter
+function filterVisitors(q){
+  q=q.toLowerCase().trim();
+  const rows=document.querySelectorAll('#vt tr');
+  let visible=0;
+  rows.forEach(r=>{
+    const name=r.dataset.name||'';
+    const flat=r.dataset.flat||'';
+    const show=!q||name.includes(q)||flat.includes(q);
+    r.style.display=show?'':'none';
+    if(show)visible++;
+  });
+  document.getElementById('v-empty').style.display=visible===0?'block':'none';
+}
+
+async function updateVisitor(id,action,btn){
+  btn.disabled=true;
+  const res=await fetch(`/api/visitors/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})});
+  const d=await res.json();
+  if(!d.success){showToast('Something went wrong','err');btn.disabled=false;return;}
+  const row=btn.closest('tr');
+  row.cells[4].innerHTML=action==='approved'?'<span class="badge bg">Approved</span>':'<span class="badge bd">Denied</span>';
+  row.cells[5].innerHTML=`<span style="color:var(--mu);font-size:12px">${action==='approved'?'Entered':'Denied'} just now</span>`;
+  row.style.background=action==='approved'?'#F0FDF4':'#FEF2F2';
+  setTimeout(()=>row.style.background='',1200);
+  pending=Math.max(0,pending-1);
+  ['pending-count','nav-p','dash-pending'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.textContent=pending;
+  });
+  showToast(action==='approved'?'Visitor approved — entry allowed':'Visitor denied','ok');
+}
+
+async function addVisitor(){
+  const name=document.getElementById('v-name').value.trim();
+  const flat=document.getElementById('v-flat').value.trim();
+  const purpose=document.getElementById('v-purpose').value;
+  if(!name||!flat){showToast('Please fill name and flat number','err');return;}
+  const res=await fetch('/api/visitors',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,flat,purpose})});
+  const d=await res.json();
+  if(!d.success){showToast('Error adding visitor','err');return;}
+  const v=d.visitor;
+  const pc={Delivery:'bw',Service:'bz','Cab/Taxi':'bi'}[v.purpose]||'bi';
+  const imgN=Math.floor(Math.random()*50)+1;
+  const tr=document.createElement('tr');
+  tr.dataset.id=v.id;tr.dataset.name=v.name.toLowerCase();tr.dataset.flat=v.flat.toLowerCase();
+  tr.style.animation='fadeUp .3s cubic-bezier(.22,1,.36,1) both';
+  tr.innerHTML=`<td><div class="nc"><div class="vav"><img src="https://i.pravatar.cc/60?img=${imgN}" alt="${v.name}"></div><div><div class="np">${v.name}</div><div class="ns">Walk-in</div></div></div></td><td><span style="font-weight:600;font-size:13px">${v.flat}</span></td><td><span class="badge ${pc}">${v.purpose}</span></td><td style="color:var(--mu);font-size:12.5px;font-weight:500">${v.time}</td><td><span class="badge bp">Pending</span></td><td><button class="btn btn-ok btn-sm" onclick="updateVisitor(${v.id},'approved',this)">Approve</button><button class="btn btn-no btn-sm" onclick="updateVisitor(${v.id},'denied',this)" style="margin-left:5px">Deny</button></td>`;
+  document.getElementById('vt').prepend(tr);
+  pending++;['pending-count','nav-p','dash-pending'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=pending;});
+  document.getElementById('v-name').value='';document.getElementById('v-flat').value='';
+  document.getElementById('vf').classList.remove('op');
+  showToast(`${name} added to gate queue`,'ok');
+}
+
+async function postNotice(){
+  const title=document.getElementById('n-title').value.trim();
+  const body=document.getElementById('n-body').value.trim();
+  const category=document.getElementById('n-cat').value;
+  const author=document.getElementById('n-from').value.trim()||'Management';
+  if(!title||!body){showToast('Please fill title and message','err');return;}
+  const res=await fetch('/api/notices',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title,body,category,author})});
+  const d=await res.json();
+  if(!d.success){showToast('Error posting notice','err');return;}
+  const n=d.notice;
+  const imgs={urgent:'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=80',info:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80',event:'https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=400&q=80',general:'https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=400&q=80'};
+  const bcs={urgent:'<span class="badge bd">Urgent</span>',info:'<span class="badge bi">Info</span>',event:'<span class="badge bv">Event</span>',general:'<span class="badge bg">General</span>'};
+  const div=document.createElement('div');
+  div.className='ncard';div.style.animation='fadeUp .3s cubic-bezier(.22,1,.36,1) both';
+  div.innerHTML=`<img class="n-img" src="${imgs[n.category]||imgs.general}" alt=""><div class="n-body-wrap"><div class="n-head"><div class="n-title">${n.title}</div><span class="new-chip">NEW</span></div><div class="n-txt">${n.body}</div><div class="n-foot"><span class="n-author">${n.author}</span>${bcs[n.category]||''}<span class="n-date">Today</span></div></div>`;
+  document.getElementById('ng').prepend(div);
+  ['n-title','n-body','n-from'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('nf').classList.remove('op');
+  showToast('Notice posted to board','ok');
+}
+
+let tt;
+function showToast(msg,type){
+  const el=document.getElementById('toast');
+  const ic=document.getElementById('t-ic');
+  document.getElementById('t-msg').textContent=msg;
+  el.className=`toast show t${type}`;
+  ic.innerHTML=type==='ok'
+    ?'<svg fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24" style="width:11px;height:11px"><polyline points="20 6 9 17 4 12"/></svg>'
+    :'<svg fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24" style="width:11px;height:11px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),3200);
+}
+
+function comingSoon(el, name){
+  showToast(`${name} — coming soon!`,'ok');
+}
+
+// Set dashboard active on load
+document.querySelector('.ni').classList.add('on');
+</script>
+</body>
+</html>
