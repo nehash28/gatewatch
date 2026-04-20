@@ -389,7 +389,6 @@ select.fi{appearance:none;cursor:pointer}
       <div class="two-col">
         <div class="card">
           <div class="ch">
-            <img class="ch-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=80&q=80" alt="">
             <div><div class="ct">Recent Activity</div><div class="cs">Live gate events</div></div>
           </div>
           <div class="feed">
@@ -410,7 +409,6 @@ select.fi{appearance:none;cursor:pointer}
 
         <div class="card">
           <div class="ch">
-            <img class="ch-img" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=80&q=80" alt="">
             <div><div class="ct">Society Snapshot</div><div class="cs">Quick overview</div></div>
           </div>
           <div style="padding:14px 18px">
@@ -459,7 +457,6 @@ select.fi{appearance:none;cursor:pointer}
 
       <div class="card">
         <div class="ch">
-          <img class="ch-img" src="https://images.unsplash.com/photo-1577102073743-7d29378b77e7?w=80&q=80" alt="">
           <div><div class="ct">Gate Queue</div><div class="cs">Live visitor log</div></div>
           <div class="ca">
             <div class="search-wrap">
@@ -485,11 +482,11 @@ select.fi{appearance:none;cursor:pointer}
         <table>
           <thead><tr><th style="width:28%">Visitor</th><th>Flat</th><th>Purpose</th><th>Time</th><th>Status</th><th>Action</th></tr></thead>
           <tbody id="vt">
-            {% set avimgs = ['12','13','14','15','25','32','33','44','47','48','49','50','51','52'] %}
+            {% set avc = ['aa','ab','ac','ad','ae','af'] %}
             {% for v in visitors %}
             <tr data-id="{{ v.id }}" data-name="{{ v.name|lower }}" data-flat="{{ v.flat|lower }}">
               <td><div class="nc">
-                <div class="vav"><img src="https://i.pravatar.cc/60?img={{ avimgs[loop.index0 % avimgs|length] }}" alt="{{ v.name }}"></div>
+                <div class="vav-txt {{ avc[loop.index0 % avc|length] }}">{{ v.name[0] }}{{ v.name.split()[-1][0] if v.name.split()|length > 1 else '' }}</div>
                 <div><div class="np">{{ v.name }}</div><div class="ns">{{ v.phone }}</div></div>
               </div></td>
               <td><span style="font-weight:600;font-size:13px">{{ v.flat }}</span></td>
@@ -525,7 +522,6 @@ select.fi{appearance:none;cursor:pointer}
       <div class="two-col">
         <div class="card">
           <div class="ch">
-            <img class="ch-img" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=80&q=80" alt="">
             <div><div class="ct">Staff On Duty</div><div class="cs">Present right now</div></div>
           </div>
           <div class="staff-grid">
@@ -577,7 +573,6 @@ select.fi{appearance:none;cursor:pointer}
 
       <div class="card">
         <div class="ch">
-          <img class="ch-img" src="https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?w=80&q=80" alt="">
           <div><div class="ct">Notice Board</div><div class="cs">Society announcements</div></div>
           <div class="ca">{% if current_user.role == 'admin' %}<button class="btn btn-d btn-sm" onclick="toggleForm('nf')">+ Post Notice</button>{% endif %}</div>
         </div>
@@ -697,11 +692,13 @@ async function addVisitor(){
   if(!d.success){showToast('Error adding visitor','err');return;}
   const v=d.visitor;
   const pc={Delivery:'bw',Service:'bz','Cab/Taxi':'bi'}[v.purpose]||'bi';
-  const imgN=Math.floor(Math.random()*50)+1;
+  const avcs=['aa','ab','ac','ad','ae','af'];
+  const avc=avcs[Math.floor(Math.random()*avcs.length)];
+  const initials=v.name.split(' ').filter(Boolean).map(w=>w[0]).slice(0,2).join('').toUpperCase();
   const tr=document.createElement('tr');
   tr.dataset.id=v.id;tr.dataset.name=v.name.toLowerCase();tr.dataset.flat=v.flat.toLowerCase();
   tr.style.animation='fadeUp .3s cubic-bezier(.22,1,.36,1) both';
-  tr.innerHTML=`<td><div class="nc"><div class="vav"><img src="https://i.pravatar.cc/60?img=${imgN}" alt="${v.name}"></div><div><div class="np">${v.name}</div><div class="ns">Walk-in</div></div></div></td><td><span style="font-weight:600;font-size:13px">${v.flat}</span></td><td><span class="badge ${pc}">${v.purpose}</span></td><td style="color:var(--mu);font-size:12.5px;font-weight:500">${v.time}</td><td><span class="badge bp">Pending</span></td><td><button class="btn btn-ok btn-sm" onclick="updateVisitor(${v.id},'approved',this)">Approve</button><button class="btn btn-no btn-sm" onclick="updateVisitor(${v.id},'denied',this)" style="margin-left:5px">Deny</button></td>`;
+  tr.innerHTML=`<td><div class="nc"><div class="vav-txt ${avc}">${initials}</div><div><div class="np">${v.name}</div><div class="ns">Walk-in</div></div></div></td><td><span style="font-weight:600;font-size:13px">${v.flat}</span></td><td><span class="badge ${pc}">${v.purpose}</span></td><td style="color:var(--mu);font-size:12.5px;font-weight:500">${v.time}</td><td><span class="badge bp">Pending</span></td><td><button class="btn btn-ok btn-sm" onclick="updateVisitor(${v.id},'approved',this)">Approve</button><button class="btn btn-no btn-sm" onclick="updateVisitor(${v.id},'denied',this)" style="margin-left:5px">Deny</button></td>`;
   document.getElementById('vt').prepend(tr);
   pending++;['pending-count','nav-p','dash-pending'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=pending;});
   document.getElementById('v-name').value='';document.getElementById('v-flat').value='';
