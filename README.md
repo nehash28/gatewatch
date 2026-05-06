@@ -1,4 +1,4 @@
-# GateWatch — Society Management App
+# Lumetra — Society Management App
 
 A MyGate-style society management website built with Flask.
 
